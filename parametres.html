@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paramètres — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="dashboard.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Paramètres</span>
+</div>
+
+<header>
+  <a href="dashboard.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="dash-main">
+
+  <form class="dash-card" id="profileForm" style="margin-bottom:20px;">
+    <span class="dash-role">Mon profil</span>
+    <h1 style="margin-bottom:16px;">Paramètres</h1>
+
+    <div class="auth-msg" id="profileMsg"></div>
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+      <img id="avatarPreview" src="" alt="" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--desk);display:none;">
+      <div id="avatarFallback" style="width:64px;height:64px;border-radius:50%;background:var(--desk);display:flex;align-items:center;justify-content:center;color:var(--lamp);font-family:var(--font-display);font-size:1.3rem;">?</div>
+      <div class="field" style="margin:0;flex:1;">
+        <label for="avatar">Changer d'avatar</label>
+        <input type="file" id="avatar" accept="image/*">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="fullName">Nom complet</label>
+      <input type="text" id="fullName" required>
+    </div>
+    <div class="field">
+      <label for="faculte">Faculté / université</label>
+      <input type="text" id="faculte" placeholder="ex. FMP — Université d'État d'Haïti">
+    </div>
+
+    <button type="submit" class="btn-submit" id="profileBtn">Enregistrer</button>
+  </form>
+
+  <form class="dash-card" id="passwordForm">
+    <span class="dash-role">Sécurité</span>
+    <h1 style="margin-bottom:16px;">Changer de mot de passe</h1>
+
+    <div class="auth-msg" id="passwordMsg"></div>
+
+    <div class="field">
+      <label for="newPassword">Nouveau mot de passe</label>
+      <input type="password" id="newPassword" minlength="6" required autocomplete="new-password">
+      <div class="field-hint">6 caractères minimum.</div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="passwordBtn">Mettre à jour</button>
+  </form>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="parametres.js"></script>
+</body>
+</html>
