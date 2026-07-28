@@ -105,6 +105,70 @@ if (casForm) {
   });
 }
 
+// ---------- DÉPÔT ARTICLE ----------
+const articleForm = document.getElementById('articleForm');
+if (articleForm) {
+  (async () => { await requireSession(); })();
+
+  const optUrl = document.getElementById('optUrl');
+  const optFichier = document.getElementById('optFichier');
+  const urlField = document.getElementById('urlField');
+  const fichierField = document.getElementById('fichierField');
+
+  document.querySelectorAll('input[name="format"]').forEach(input => {
+    input.addEventListener('change', () => {
+      optUrl.classList.toggle('checked', input.value === 'url');
+      optFichier.classList.toggle('checked', input.value === 'fichier');
+      urlField.style.display = input.value === 'url' ? 'block' : 'none';
+      fichierField.style.display = input.value === 'fichier' ? 'block' : 'none';
+    });
+  });
+
+  articleForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const session = await requireSession();
+    if (!session) return;
+
+    const format = document.querySelector('input[name="format"]:checked').value;
+    const urlVal = document.getElementById('url').value.trim();
+    const fichierFile = document.getElementById('fichier').files[0];
+
+    if (format === 'url' && !urlVal) {
+      showDepotMsg('Ajoute le lien de l\'article, ou choisis "Fichier".', 'error');
+      return;
+    }
+    if (format === 'fichier' && !fichierFile) {
+      showDepotMsg('Ajoute un fichier PDF ou Word, ou choisis "Lien".', 'error');
+      return;
+    }
+
+    btn.disabled = true; btn.textContent = 'Envoi...';
+    try {
+      const imageFile = document.getElementById('image').files[0];
+      const image_url = await uploadFile(imageFile, 'articles/images');
+      const fichier_url = format === 'fichier' ? await uploadFile(fichierFile, 'articles/documents') : null;
+
+      const { error } = await window.supabaseClient.from('articles').insert({
+        author_id: session.user.id,
+        titre: document.getElementById('titre').value.trim(),
+        resume: document.getElementById('resume').value.trim(),
+        url: format === 'url' ? urlVal : null,
+        fichier_url,
+        image_url
+      });
+      if (error) throw error;
+
+      showDepotMsg('Article publié. Il apparaîtra dès validation.', 'ok');
+      articleForm.reset();
+      setTimeout(() => window.location.href = 'dashboard.html', 1400);
+    } catch (err) {
+      showDepotMsg(err.message || 'Une erreur est survenue.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = "Publier l'article";
+    }
+  });
+}
 // ---------- DÉPÔT STAGE ----------
 const stageForm = document.getElementById('stageForm');
 if (stageForm) {
