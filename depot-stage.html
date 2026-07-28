@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajouter un stage — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Ajouter un stage</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="auth-main">
+  <div class="lamp-glow" style="top:-60px;"></div>
+  <form class="auth-card" id="stageForm" style="position:relative;z-index:2;">
+    <span class="auth-tab-strip">Dossier 03</span>
+    <h1>Ajouter un stage</h1>
+    <p class="auth-sub">Le carnet de garde — hôpital par hôpital, pour savoir où la formation est encore possible.</p>
+
+    <div class="auth-msg" id="depotMsg"></div>
+
+    <div class="field">
+      <label for="hopital">Hôpital</label>
+      <input type="text" id="hopital" required placeholder="ex. Hôpital Immaculée Conception">
+    </div>
+    <div class="field">
+      <label for="service">Service / département</label>
+      <input type="text" id="service" placeholder="ex. Pédiatrie, Urgences...">
+    </div>
+    <div class="field">
+      <label for="ville">Ville</label>
+      <input type="text" id="ville" placeholder="ex. Les Cayes">
+    </div>
+    <div class="field">
+      <label for="periode">Période du stage</label>
+      <input type="text" id="periode" placeholder="ex. Janvier – Mars 2026">
+    </div>
+    <div class="field">
+      <label for="notes">Notes (accès, difficultés, conseils)</label>
+      <input type="text" id="notes" placeholder="Ce qu'un futur stagiaire devrait savoir">
+    </div>
+    <div class="field">
+      <label for="photo">Photo du service (optionnel)</label>
+      <input type="file" id="photo" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">Ajouter le stage</button>
+  </form>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="depot.js"></script>
+</body>
+</html>
