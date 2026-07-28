@@ -79,11 +79,11 @@
       <b>Pourquoi ce dossier existe</b>
       Entre soutenances collectives et procédures de diplôme qui s'étirent sur plusieurs années, les mémoires haïtiens en médecine restent dispersés par faculté. Ce dossier leur donne une adresse commune, cherchable, qui ne disparaît pas avec la promotion.
     </div>
-    <div class="entry-grid">
+    <div class="entry-grid" id="memoires-grid">
       <div class="entry-slot placeholder">Premier mémoire à venir</div>
       <div class="entry-slot placeholder">Espace réservé — glisse une image de couverture ici</div>
     </div>
-    <a class="btn-dossier" href="inscription.html">
+    <a class="btn-dossier" href="depot-memoire.html">
       Déposer un mémoire
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -102,11 +102,11 @@
       <b>Pourquoi ce dossier existe</b>
       Un cas bien documenté est une leçon pour le prochain étudiant qui rencontrera la même situation. Anonymisé et archivé, il continue à servir bien après la présentation.
     </div>
-    <div class="entry-grid">
+    <div class="entry-grid" id="cas-grid">
       <div class="entry-slot placeholder">Premier cas à venir</div>
       <div class="entry-slot placeholder">Espace réservé — glisse une image ou un schéma ici</div>
     </div>
-    <a class="btn-dossier" href="inscription.html">
+    <a class="btn-dossier" href="depot-cas.html">
       Présenter un cas
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -125,11 +125,11 @@
       <b>Pourquoi ce dossier existe</b>
       L'Hôpital Général de l'UEH est fermé depuis février 2024, et l'accès aux terrains de stage varie fortement d'une région à l'autre. Ce dossier cartographie l'expérience réelle des étudiants, hôpital par hôpital.
     </div>
-    <div class="entry-grid">
+    <div class="entry-grid" id="stages-grid">
       <div class="entry-slot placeholder">Premier stage à venir</div>
       <div class="entry-slot placeholder">Espace réservé — glisse une photo du service ici</div>
     </div>
-    <a class="btn-dossier" href="inscription.html">
+    <a class="btn-dossier" href="depot-stage.html">
       Ajouter un stage
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -141,6 +141,9 @@
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="listing.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
