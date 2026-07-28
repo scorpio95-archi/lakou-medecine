@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publier un article — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Publier un article</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="auth-main">
+  <div class="lamp-glow" style="top:-60px;"></div>
+  <form class="auth-card" id="articleForm" style="position:relative;z-index:2;">
+    <span class="auth-tab-strip">Dossier 04</span>
+    <h1>Publier un article</h1>
+    <p class="auth-sub">Un billet, un reportage, une réflexion — le tien ou celui d'un confrère cité dans le texte.</p>
+
+    <div class="auth-msg" id="depotMsg"></div>
+
+    <div class="field">
+      <label for="titre">Titre de l'article</label>
+      <input type="text" id="titre" required>
+    </div>
+
+    <div class="field">
+      <label for="resume">Résumé (quelques phrases)</label>
+      <input type="text" id="resume" placeholder="De quoi ça parle ?">
+    </div>
+
+    <div class="field">
+      <label>Format de la publication</label>
+      <div class="role-options">
+        <label class="role-option checked" id="optUrl">
+          <input type="radio" name="format" value="url" checked>
+          Lien (URL)
+        </label>
+        <label class="role-option" id="optFichier">
+          <input type="radio" name="format" value="fichier">
+          Fichier (PDF/Word)
+        </label>
+      </div>
+    </div>
+
+    <div class="field" id="urlField">
+      <label for="url">Lien vers l'article</label>
+      <input type="url" id="url" placeholder="https://...">
+    </div>
+
+    <div class="field" id="fichierField" style="display:none;">
+      <label for="fichier">Fichier (PDF ou Word)</label>
+      <input type="file" id="fichier" accept=".pdf,.doc,.docx">
+    </div>
+
+    <div class="field">
+      <label for="image">Image de couverture (optionnel)</label>
+      <input type="file" id="image" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">Publier l'article</button>
+  </form>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="depot.js"></script>
+</body>
+</html>
