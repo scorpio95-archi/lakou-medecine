@@ -274,6 +274,7 @@ header{
   border-color:var(--chart-ink);color:var(--chart-ink);
   background:rgba(91,143,168,0.1);
 }
+
 .btn-submit{
   width:100%;margin-top:6px;
   font-family:var(--font-display);font-weight:700;font-size:0.9rem;
@@ -317,6 +318,46 @@ header{
   border-radius:8px;padding:9px 16px;cursor:pointer;
 }
 .btn-logout:hover{background:var(--urgent);color:var(--paper);}
+
+.dash-block{
+  background:var(--paper);color:var(--ink);border-radius:4px 14px 14px 14px;
+  border:1px solid var(--paper-dk);padding:22px 20px;margin-top:16px;
+}
+.dash-block h2{
+  font-family:var(--font-display);font-size:1.02rem;margin:0 0 14px;color:var(--ink);
+}
+.dash-empty{color:var(--ink-soft);font-size:0.88rem;}
+.dash-empty a{color:var(--chart-ink);}
+.deposit-list{display:flex;flex-direction:column;gap:0;}
+.deposit-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 0;border-top:1px dashed var(--paper-dk);
+}
+.deposit-row:first-child{border-top:none;}
+.deposit-type{
+  font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.06em;
+  text-transform:uppercase;color:var(--chart-ink);
+}
+.deposit-title{font-size:0.92rem;color:var(--ink);margin-top:2px;}
+.status-pill{
+  font-family:var(--font-display);font-size:0.66rem;letter-spacing:0.04em;
+  padding:4px 10px;border-radius:20px;white-space:nowrap;
+}
+.status-pill.valide{background:#dff3ea;color:#1c6f5c;}
+.status-pill.en_attente{background:#fdece9;color:var(--urgent);}
+.btn-validate{
+  font-family:var(--font-display);font-size:0.74rem;font-weight:700;
+  background:var(--chart-ink);color:#fff;border:none;border-radius:6px;
+  padding:8px 14px;cursor:pointer;white-space:nowrap;
+}
+.btn-validate:hover{background:#47738a;}
+.dash-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.dash-links .btn-dossier{font-size:0.72rem;padding:8px 12px;}
+.role-select{
+  font-family:var(--font-display);font-size:0.76rem;
+  padding:6px 8px;border-radius:6px;border:1px solid var(--paper-dk);
+  background:#fbf8ef;color:var(--ink);
+}
 
 /* ---------- footer ---------- */
 footer{
