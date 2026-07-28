@@ -49,7 +49,8 @@ async function renderMyDeposits(uid, container) {
   const tables = [
     { name: 'memoires', label: 'Mémoire', field: 'titre' },
     { name: 'cas_cliniques', label: 'Cas clinique', field: 'titre' },
-    { name: 'stages', label: 'Stage', field: 'hopital' }
+    { name: 'stages', label: 'Stage', field: 'hopital' },
+    { name: 'articles', label: 'Article', field: 'titre' }
   ];
   let rows = [];
   for (const t of tables) {
@@ -75,6 +76,7 @@ async function renderMyDeposits(uid, container) {
       <a class="btn-dossier" href="depot-memoire.html">+ Mémoire</a>
       <a class="btn-dossier" href="depot-cas.html">+ Cas clinique</a>
       <a class="btn-dossier" href="depot-stage.html">+ Stage</a>
+      <a class="btn-dossier" href="depot-article.html">+ Article</a>
     </div>
   </div>`;
   container.insertAdjacentHTML('beforeend', html);
@@ -84,7 +86,8 @@ async function renderReviewQueue(container) {
   const tables = [
     { name: 'memoires', label: 'Mémoire', field: 'titre' },
     { name: 'cas_cliniques', label: 'Cas clinique', field: 'titre' },
-    { name: 'stages', label: 'Stage', field: 'hopital' }
+    { name: 'stages', label: 'Stage', field: 'hopital' },
+    { name: 'articles', label: 'Article', field: 'titre' }
   ];
   let pending = [];
   for (const t of tables) {
