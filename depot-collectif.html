@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajouter un collectif — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <a href="dashboard.html">Tableau de bord</a>
+  <span class="sep">›</span>
+  <span class="current">Nouveau collectif</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="auth-main">
+  <div class="lamp-glow" style="top:-60px;"></div>
+  <form class="auth-card" id="collectifForm" style="position:relative;z-index:2;max-width:460px;">
+    <span class="auth-tab-strip">👥 Collectifs & Promotions</span>
+    <h1>Ajouter un collectif</h1>
+    <p class="auth-sub">Promotion, association, ONG ou club — ta communauté a une adresse ici.</p>
+
+    <div class="auth-msg" id="authMsg"></div>
+
+    <div class="field">
+      <label for="type">Type</label>
+      <select id="type" required>
+        <option value="promotion">Promotion</option>
+        <option value="association">Association étudiante</option>
+        <option value="ong">ONG universitaire</option>
+        <option value="club">Club de recherche</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" required placeholder="ex. Promotion 2028, AEFMP...">
+    </div>
+
+    <div class="field">
+      <label for="annee">Année (optionnel)</label>
+      <input type="text" id="annee" placeholder="ex. 2028">
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" rows="4" placeholder="Ce que fait ce collectif, qui peut le rejoindre..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="contactEmail">Courriel de contact (optionnel)</label>
+      <input type="email" id="contactEmail">
+    </div>
+
+    <div class="field">
+      <label for="lienUrl">Lien (optionnel)</label>
+      <input type="url" id="lienUrl" placeholder="Facebook, WhatsApp, site...">
+    </div>
+
+    <div class="field">
+      <label for="imageUrl">Image / logo — URL (optionnel)</label>
+      <input type="url" id="imageUrl">
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">Envoyer pour validation</button>
+  </form>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+document.getElementById('collectifForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('authMsg');
+  const btn = document.getElementById('submitBtn');
+
+  const { data: { session } } = await window.supabaseClient.auth.getSession();
+  if (!session) {
+    msg.textContent = 'Connecte-toi pour ajouter un collectif.';
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  const nom = document.getElementById('nom').value.trim();
+  if (!nom) {
+    msg.textContent = 'Le nom est obligatoire.';
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  const payload = {
+    type: document.getElementById('type').value,
+    nom,
+    annee: document.getElementById('annee').value.trim() || null,
+    description: document.getElementById('description').value.trim() || null,
+    contact_email: document.getElementById('contactEmail').value.trim() || null,
+    lien_url: document.getElementById('lienUrl').value.trim() || null,
+    image_url: document.getElementById('imageUrl').value.trim() || null,
+    author_id: session.user.id
+  };
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi...';
+
+  const { error } = await window.supabaseClient.from('collectifs').insert(payload);
+
+  btn.disabled = false;
+  btn.textContent = 'Envoyer pour validation';
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  msg.textContent = 'Envoyé ! Un admin ou enseignant doit valider avant publication.';
+  msg.className = 'auth-msg show ok';
+  document.getElementById('collectifForm').reset();
+});
+</script>
+</body>
+</html>
