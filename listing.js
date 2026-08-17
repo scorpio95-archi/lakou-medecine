@@ -8,8 +8,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     c => c.resume ? (c.resume.length > 80 ? c.resume.slice(0, 80) + '…' : c.resume) : '');
   await renderList('stages', 'hopital', 'stages-grid', 'photo_url',
     s => [s.service, s.ville].filter(Boolean).join(' — '));
+  await renderList('collectifs', 'nom', 'collectifs-grid', 'image_url',
+    c => [labelType(c.type), c.annee].filter(Boolean).join(' — '));
+  await renderList('opportunites', 'titre', 'opportunites-grid', 'image_url',
+    o => [labelType(o.type), o.organisation].filter(Boolean).join(' — '));
   await renderArticles();
 });
+
+const TYPE_LABELS = {
+  promotion: 'Promotion', association: 'Association', ong: 'ONG', club: 'Club',
+  stage: 'Stage', residence: 'Résidence', conference: 'Conférence', congres: 'Congrès', bourse: 'Bourse'
+};
+function labelType(type) {
+  return TYPE_LABELS[type] || type;
+}
 
 async function renderArticles() {
   const container = document.getElementById('articles-grid');
