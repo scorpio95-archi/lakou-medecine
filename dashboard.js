@@ -30,7 +30,7 @@
   if (role === 'visiteur') {
     content.insertAdjacentHTML('beforeend', `
       <div class="dash-block">
-        <p class="dash-empty">Ton compte visiteur donne accès à la lecture. Les mémoires, cas et stages validés apparaissent sur la <a href="index.html">page d'accueil</a>.</p>
+        <p class="dash-empty">Ton compte visiteur donne accès à la lecture. Les mémoires, cas, stages, collectifs et opportunités validés apparaissent sur la <a href="index.html">page d'accueil</a>.</p>
       </div>`);
     return;
   }
@@ -45,15 +45,18 @@
   }
 })();
 
+const DEPOT_TABLES = [
+  { name: 'memoires', label: 'Mémoire', field: 'titre' },
+  { name: 'cas_cliniques', label: 'Cas clinique', field: 'titre' },
+  { name: 'stages', label: 'Stage', field: 'hopital' },
+  { name: 'articles', label: 'Article', field: 'titre' },
+  { name: 'collectifs', label: 'Collectif', field: 'nom' },
+  { name: 'opportunites', label: 'Opportunité', field: 'titre' }
+];
+
 async function renderMyDeposits(uid, container) {
-  const tables = [
-    { name: 'memoires', label: 'Mémoire', field: 'titre' },
-    { name: 'cas_cliniques', label: 'Cas clinique', field: 'titre' },
-    { name: 'stages', label: 'Stage', field: 'hopital' },
-    { name: 'articles', label: 'Article', field: 'titre' }
-  ];
   let rows = [];
-  for (const t of tables) {
+  for (const t of DEPOT_TABLES) {
     const { data } = await window.supabaseClient
       .from(t.name).select('id,status,created_at,' + t.field)
       .eq('author_id', uid).order('created_at', { ascending: false });
@@ -77,20 +80,16 @@ async function renderMyDeposits(uid, container) {
       <a class="btn-dossier" href="depot-cas.html">+ Cas clinique</a>
       <a class="btn-dossier" href="depot-stage.html">+ Stage</a>
       <a class="btn-dossier" href="depot-article.html">+ Article</a>
+      <a class="btn-dossier" href="depot-collectif.html">+ Collectif</a>
+      <a class="btn-dossier" href="depot-opportunite.html">+ Opportunité</a>
     </div>
   </div>`;
   container.insertAdjacentHTML('beforeend', html);
 }
 
 async function renderReviewQueue(container) {
-  const tables = [
-    { name: 'memoires', label: 'Mémoire', field: 'titre' },
-    { name: 'cas_cliniques', label: 'Cas clinique', field: 'titre' },
-    { name: 'stages', label: 'Stage', field: 'hopital' },
-    { name: 'articles', label: 'Article', field: 'titre' }
-  ];
   let pending = [];
-  for (const t of tables) {
+  for (const t of DEPOT_TABLES) {
     const { data } = await window.supabaseClient
       .from(t.name).select('id,created_at,' + t.field)
       .eq('status', 'en_attente').order('created_at', { ascending: true });
