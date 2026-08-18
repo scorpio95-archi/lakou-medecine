@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes dossiers — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <a href="dashboard.html">Tableau de bord</a>
+  <span class="sep">›</span>
+  <span class="current">Mes dossiers</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main style="padding:26px 16px 60px;max-width:900px;margin:0 auto;">
+  <div style="margin:0 0 20px;">
+    <div class="dossier-num">MES DOSSIERS</div>
+    <h1 style="font-family:var(--font-display);font-size:1.4rem;color:var(--paper);margin:4px 0 0;">Tous mes fichiers déposés</h1>
+    <p style="color:#c9beac;font-size:0.9rem;margin-top:6px;">Mémoires, cas, stages, articles, collectifs et opportunités que tu as soumis, toutes bannières confondues.</p>
+  </div>
+
+  <p class="dash-empty" id="mesDossiersEmpty" style="display:none;color:#c9beac;">Rien déposé pour l'instant. Choisis une bannière sur la page d'accueil pour commencer.</p>
+  <div class="entry-grid" id="mesDossiersGrid"></div>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="mes-dossiers.js"></script>
+</body>
+</html>
