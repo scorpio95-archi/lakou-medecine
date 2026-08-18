@@ -41,6 +41,7 @@
     await renderReviewQueue(content);
   }
   if (role === 'admin') {
+    await renderStatistiques(content);
     await renderRoleManager(content);
   }
 })();
@@ -142,6 +143,102 @@ async function renderRoleManager(container) {
     sel.addEventListener('change', async () => {
       await window.supabaseClient.from('profiles').update({ role: sel.value }).eq('id', sel.dataset.id);
     });
+  });
+}
+
+async function renderStatistiques(container) {
+  container.insertAdjacentHTML('beforeend', `
+    <div class="dash-block" id="statsBlock">
+      <h2>Statistiques</h2>
+      <div class="stats-cards" id="statsCards"></div>
+      <canvas id="statsChart" height="180"></canvas>
+      <div class="dash-links">
+        <button class="btn-dossier" id="sendReportBtn" type="button">Envoyer le rapport</button>
+      </div>
+      <div class="auth-msg" id="reportMsg"></div>
+    </div>`);
+
+  const today = new Date();
+  const dayKeys = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    dayKeys.push(d.toISOString().slice(0, 10));
+  }
+  const depotBuckets = Object.fromEntries(dayKeys.map(k => [k, 0]));
+  const inscritBuckets = Object.fromEntries(dayKeys.map(k => [k, 0]));
+  const since = dayKeys[0] + 'T00:00:00Z';
+
+  const { count: totalInscrits } = await window.supabaseClient
+    .from('profiles').select('*', { count: 'exact', head: true });
+
+  const { data: recentProfiles } = await window.supabaseClient
+    .from('profiles').select('created_at').gte('created_at', since);
+  (recentProfiles || []).forEach(p => {
+    const day = (p.created_at || '').slice(0, 10);
+    if (day in inscritBuckets) inscritBuckets[day]++;
+  });
+
+  const statusTotals = { en_attente: 0, valide: 0, rejete: 0 };
+  for (const t of DEPOT_TABLES) {
+    const { data } = await window.supabaseClient.from(t.name).select('status, created_at');
+    (data || []).forEach(r => {
+      if (statusTotals[r.status] !== undefined) statusTotals[r.status]++;
+      const day = (r.created_at || '').slice(0, 10);
+      if (day in depotBuckets) depotBuckets[day]++;
+    });
+  }
+
+  document.getElementById('statsCards').innerHTML = `
+    <div class="stat-card"><span class="stat-num">${totalInscrits || 0}</span><span class="stat-label">Inscrits</span></div>
+    <div class="stat-card"><span class="stat-num">${statusTotals.en_attente}</span><span class="stat-label">En attente</span></div>
+    <div class="stat-card"><span class="stat-num">${statusTotals.valide}</span><span class="stat-label">Validés</span></div>
+    <div class="stat-card"><span class="stat-num">${statusTotals.rejete}</span><span class="stat-label">Rejetés</span></div>
+  `;
+
+  await loadChartJs();
+  const labels = dayKeys.map(k => k.slice(5).split('-').reverse().join('/'));
+  new Chart(document.getElementById('statsChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Dépôts', data: dayKeys.map(k => depotBuckets[k]), borderColor: '#5b8fa8', backgroundColor: 'rgba(91,143,168,0.15)', tension: 0.3, fill: true },
+        { label: 'Inscriptions', data: dayKeys.map(k => inscritBuckets[k]), borderColor: '#e8a33d', backgroundColor: 'rgba(232,163,61,0.12)', tension: 0.3, fill: true }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#241f18', font: { family: 'Courier Prime', size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#6b6152', font: { size: 9 } } },
+        y: { beginAtZero: true, ticks: { color: '#6b6152', precision: 0 } }
+      }
+    }
+  });
+
+  document.getElementById('sendReportBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('sendReportBtn');
+    const msg = document.getElementById('reportMsg');
+    btn.disabled = true; btn.textContent = 'Envoi...';
+    const { error } = await window.supabaseClient.functions.invoke('send-dashboard-report');
+    btn.disabled = false; btn.textContent = 'Envoyer le rapport';
+    if (error) {
+      msg.textContent = error.message || "Erreur lors de l'envoi.";
+      msg.className = 'auth-msg show error';
+    } else {
+      msg.textContent = 'Rapport envoyé par courriel.';
+      msg.className = 'auth-msg show ok';
+    }
+  });
+}
+
+function loadChartJs() {
+  return new Promise((resolve) => {
+    if (window.Chart) return resolve();
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4';
+    script.onload = resolve;
+    document.head.appendChild(script);
   });
 }
 
