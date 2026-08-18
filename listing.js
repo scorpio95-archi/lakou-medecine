@@ -13,7 +13,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderList('opportunites', 'titre', 'opportunites-grid', 'image_url',
     o => [labelType(o.type), o.organisation].filter(Boolean).join(' — '));
   await renderArticles();
+  await renderAdminCard();
 });
+
+async function renderAdminCard() {
+  const card = document.getElementById('adminCard');
+  if (!card) return;
+
+  const { data, error } = await window.supabaseClient
+    .from('profiles')
+    .select('full_name, faculte, avatar_url')
+    .eq('role', 'admin')
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return; // pas de RLS SELECT public sur profiles, ou pas encore d'admin
+
+  const avatar = document.getElementById('adminAvatar');
+  const fallback = document.getElementById('adminAvatarFallback');
+  if (data.avatar_url) {
+    avatar.src = data.avatar_url;
+    avatar.style.display = 'block';
+    fallback.style.display = 'none';
+  } else {
+    fallback.textContent = (data.full_name || 'A').charAt(0).toUpperCase();
+  }
+
+  document.getElementById('adminName').textContent = data.full_name || 'Administrateur';
+  document.getElementById('adminFaculte').textContent = data.faculte || '';
+  card.style.display = 'flex';
+}
 
 const TYPE_LABELS = {
   promotion: 'Promotion', association: 'Association', ong: 'ONG', club: 'Club',
