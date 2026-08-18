@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Contact</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="auth-main">
+  <div class="lamp-glow" style="top:-60px;"></div>
+  <form class="auth-card" id="contactForm" style="position:relative;z-index:2;max-width:460px;">
+    <span class="auth-tab-strip">✉️ Contact</span>
+    <h1 id="contactTitle">Écris-nous</h1>
+    <p class="auth-sub" id="contactSub">Une question, un problème, une suggestion — ton message part vers la bonne personne.</p>
+
+    <div class="auth-msg" id="authMsg"></div>
+
+    <div class="field">
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" required>
+    </div>
+
+    <div class="field">
+      <label for="email">Courriel</label>
+      <input type="email" id="email" required>
+    </div>
+
+    <div class="field">
+      <label for="sujet">Sujet</label>
+      <select id="sujet" required></select>
+    </div>
+
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">Envoyer</button>
+  </form>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+const SUJETS_UTILISATEUR = [
+  ['question', 'Question sur mon dossier'],
+  ['probleme', 'Signaler un problème'],
+  ['suggestion', 'Suggestion de contenu'],
+  ['autre', 'Autre'],
+];
+const SUJETS_ADMIN = [
+  ['technique', 'Problème technique de la plateforme'],
+  ['fonctionnalite', 'Demande de fonctionnalité'],
+  ['reseau', 'Question sur le réseau Lakou'],
+  ['abus', 'Signalement à faire remonter'],
+  ['autre', 'Autre'],
+];
+
+(async function () {
+  const sujetSelect = document.getElementById('sujet');
+  let isAdmin = false;
+
+  const { data: { session } } = await window.supabaseClient.auth.getSession();
+  if (session) {
+    document.getElementById('email').value = session.user.email || '';
+    const { data: profile } = await window.supabaseClient
+      .from('profiles').select('full_name, role').eq('id', session.user.id).single();
+    if (profile?.full_name) document.getElementById('nom').value = profile.full_name;
+    isAdmin = profile?.role === 'admin';
+  }
+
+  if (isAdmin) {
+    document.getElementById('contactTitle').textContent = 'Écris au PDG du réseau';
+    document.getElementById('contactSub').textContent = 'Problème technique, demande de fonctionnalité ou signalement à faire remonter — ton message part directement à Sébastien.';
+  }
+
+  const options = isAdmin ? SUJETS_ADMIN : SUJETS_UTILISATEUR;
+  sujetSelect.innerHTML = options.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+})();
+
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('authMsg');
+  const btn = document.getElementById('submitBtn');
+
+  const nom = document.getElementById('nom').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+  if (!nom || !email || !message) {
+    msg.textContent = 'Nom, courriel et message sont obligatoires.';
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi...';
+
+  const { error } = await window.supabaseClient.functions.invoke('send-contact-message', {
+    body: { nom, email, sujet: document.getElementById('sujet').value, message }
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Envoyer';
+
+  if (error) {
+    msg.textContent = error.message || "Erreur lors de l'envoi.";
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  msg.textContent = 'Message envoyé.';
+  msg.className = 'auth-msg show ok';
+  document.getElementById('contactForm').reset();
+});
+</script>
+</body>
+</html>
