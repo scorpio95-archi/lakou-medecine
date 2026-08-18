@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouveau sujet — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <a href="forum.html">Forum</a>
+  <span class="sep">›</span>
+  <span class="current">Nouveau sujet</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="auth-main">
+  <div class="lamp-glow" style="top:-60px;"></div>
+  <form class="auth-card" id="topicForm" style="position:relative;z-index:2;max-width:460px;">
+    <span class="auth-tab-strip">💬 Forum</span>
+    <h1>Nouveau sujet</h1>
+    <p class="auth-sub">Choisis la catégorie qui correspond le mieux à ta question.</p>
+
+    <div class="auth-msg" id="authMsg"></div>
+
+    <div class="field">
+      <label for="category">Catégorie</label>
+      <select id="category" required>
+        <option value="questions">Questions</option>
+        <option value="projets">Projets</option>
+        <option value="ressources">Ressources</option>
+        <option value="entraide">Entraide</option>
+        <option value="annonces">Annonces</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="title">Titre</label>
+      <input type="text" id="title" required placeholder="En une phrase claire">
+    </div>
+
+    <div class="field">
+      <label for="content">Message</label>
+      <textarea id="content" rows="6" required></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">Publier le sujet</button>
+  </form>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+document.getElementById('topicForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('authMsg');
+  const btn = document.getElementById('submitBtn');
+
+  const { data: { session } } = await window.supabaseClient.auth.getSession();
+  if (!session) {
+    msg.textContent = 'Connecte-toi pour publier un sujet.';
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  const title = document.getElementById('title').value.trim();
+  const content = document.getElementById('content').value.trim();
+  if (!title || !content) {
+    msg.textContent = 'Titre et message sont obligatoires.';
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Publication...';
+
+  const { data, error } = await window.supabaseClient
+    .from('forum_topics')
+    .insert({
+      category: document.getElementById('category').value,
+      title, content,
+      author_id: session.user.id
+    })
+    .select('id').single();
+
+  btn.disabled = false;
+  btn.textContent = 'Publier le sujet';
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'auth-msg show error';
+    return;
+  }
+
+  window.location.href = 'forum-sujet.html?id=' + data.id;
+});
+</script>
+</body>
+</html>
