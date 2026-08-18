@@ -15,7 +15,40 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderArticles();
   await renderAdminCard();
   await renderMenuAuthState();
+  await renderLiveCounters();
 });
+
+const COUNTER_CONTENT_TABLES = ['memoires', 'cas_cliniques', 'stages', 'articles', 'collectifs', 'opportunites'];
+
+async function renderLiveCounters() {
+  const elInscrits = document.getElementById('statInscrits');
+  const elDepots = document.getElementById('statDepots');
+  if (!elInscrits || !elDepots) return;
+
+  async function refreshCounts() {
+    const { count: inscrits } = await window.supabaseClient
+      .from('profiles').select('*', { count: 'exact', head: true });
+    elInscrits.textContent = inscrits ?? 0;
+
+    let total = 0;
+    for (const t of COUNTER_CONTENT_TABLES) {
+      const { count } = await window.supabaseClient
+        .from(t).select('*', { count: 'exact', head: true }).eq('status', 'valide');
+      total += count || 0;
+    }
+    elDepots.textContent = total;
+  }
+
+  await refreshCounts();
+
+  // Abonnement temps réel : recalcule dès qu'une ligne change sur une des tables
+  const channel = window.supabaseClient.channel('home-counters');
+  channel.on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, refreshCounts);
+  COUNTER_CONTENT_TABLES.forEach(t => {
+    channel.on('postgres_changes', { event: '*', schema: 'public', table: t }, refreshCounts);
+  });
+  channel.subscribe();
+}
 
 async function renderMenuAuthState() {
   const guest = document.getElementById('menuGuest');
