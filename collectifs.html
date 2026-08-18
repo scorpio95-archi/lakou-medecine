@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collectifs & Promotions — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Collectifs & Promotions</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="listing-main">
+  <div class="listing-head">
+    <span class="hero-eyebrow">👥 Bannière 04</span>
+    <h1>Collectifs & Promotions</h1>
+    <p>Toutes les promotions, associations, ONG et clubs de la communauté.</p>
+  </div>
+
+  <p class="listing-empty" id="collectifsEmpty" style="display:none;">Aucun collectif publié pour l'instant.</p>
+  <div class="entry-grid" id="collectifsFullGrid"></div>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<a class="fab" href="depot-collectif.html" aria-label="Ajouter un collectif">+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="collectifs.js"></script>
+</body>
+</html>
