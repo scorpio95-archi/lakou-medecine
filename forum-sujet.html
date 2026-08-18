@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sujet — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <a href="forum.html">Forum</a>
+  <span class="sep">›</span>
+  <span class="current" id="breadcrumbTitle">Sujet</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="listing-main" style="max-width:640px;">
+  <div class="forum-post" id="topicPost">
+    <span class="hero-eyebrow" id="topicCat">—</span>
+    <span class="forum-status" id="topicStatus" style="float:right;">—</span>
+    <h1 style="font-family:var(--font-display);font-size:1.25rem;color:var(--paper);margin:10px 0 0;" id="topicTitle">—</h1>
+    <div class="forum-row-meta" id="topicMeta"></div>
+    <div class="forum-post-content" id="topicContent"></div>
+    <div style="margin-top:14px;" id="topicLockActions"></div>
+  </div>
+
+  <h2 style="font-family:var(--font-display);font-size:1rem;color:var(--paper);margin:0 0 10px;">Réponses</h2>
+  <div id="repliesList"></div>
+  <p class="listing-empty" id="repliesEmpty" style="display:none;">Aucune réponse pour l'instant.</p>
+
+  <form class="auth-card" id="replyForm" style="margin-top:20px;max-width:100%;">
+    <div class="auth-msg" id="authMsg"></div>
+    <div class="field">
+      <label for="replyContent">Ta réponse</label>
+      <textarea id="replyContent" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn-submit" id="submitBtn">Répondre</button>
+  </form>
+  <p class="listing-empty" id="lockedMsg" style="display:none;">Ce sujet est verrouillé — plus de réponse possible.</p>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="forum-sujet.js"></script>
+</body>
+</html>
