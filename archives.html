@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archives académiques — Lakou Santé Médecine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="index.html">🏠 Lakou Médecine</a>
+  <span class="sep">›</span>
+  <span class="current">Archives académiques</span>
+</div>
+
+<header>
+  <a href="index.html" class="logo-link">
+    <svg class="lamp-mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 6l11 8-11 8-11-8 11-8z" stroke="#e8a33d" stroke-width="2"/>
+      <path d="M20 22v10M14 34h12" stroke="#f2ecdd" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">LAKOU SANTÉ<span>Médecine</span></span>
+  </a>
+</header>
+
+<main class="listing-main">
+  <div class="listing-head">
+    <span class="hero-eyebrow">📚 Bannière 01</span>
+    <h1>Archives académiques</h1>
+    <p>Tous les mémoires, thèses et cas cliniques déposés par la communauté, validés et publics.</p>
+  </div>
+
+  <div class="sub-dossier" style="border-top:none;margin-top:0;padding-top:0;">
+    <h3 class="sub-title">Mémoires & Thèses</h3>
+    <p class="listing-empty" id="memoiresEmpty" style="display:none;">Aucun mémoire publié pour l'instant.</p>
+    <div class="entry-grid" id="memoiresFullGrid"></div>
+  </div>
+
+  <div class="sub-dossier">
+    <h3 class="sub-title">Cas cliniques</h3>
+    <p class="listing-empty" id="casEmpty" style="display:none;">Aucun cas publié pour l'instant.</p>
+    <div class="entry-grid" id="casFullGrid"></div>
+  </div>
+</main>
+
+<footer>
+  <p>Une discipline de <a href="https://lakou-sante.vercel.app/">Lakou Santé</a>, réseau <a href="https://lakou-inivesite.vercel.app/">Lakou Inivesite</a>.</p>
+</footer>
+
+<div class="fab-menu" id="fabMenu">
+  <a href="depot-memoire.html">Déposer un mémoire</a>
+  <a href="depot-cas.html">Présenter un cas</a>
+</div>
+<button class="fab" id="fabBtn" aria-label="Ajouter">+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="archives.js"></script>
+<script>
+document.getElementById('fabBtn').addEventListener('click', () => {
+  document.getElementById('fabMenu').classList.toggle('open');
+});
+</script>
+</body>
+</html>
