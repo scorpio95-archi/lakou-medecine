@@ -14,7 +14,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     o => [labelType(o.type), o.organisation].filter(Boolean).join(' — '));
   await renderArticles();
   await renderAdminCard();
+  await renderMenuAuthState();
 });
+
+async function renderMenuAuthState() {
+  const guest = document.getElementById('menuGuest');
+  const auth = document.getElementById('menuAuth');
+  if (!guest || !auth) return;
+  const { data: { session } } = await window.supabaseClient.auth.getSession();
+  if (session) {
+    guest.style.display = 'none';
+    auth.style.display = 'block';
+  } else {
+    guest.style.display = 'block';
+    auth.style.display = 'none';
+  }
+}
 
 async function renderAdminCard() {
   const card = document.getElementById('adminCard');
